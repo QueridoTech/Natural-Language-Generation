@@ -222,48 +222,50 @@
             ]
         }
     },
-    "compoundSentences": [
-        {
-            "type": [
-                "positive",
-                "neutral",
-                "negative",
-                "na"
-            ],
-            "sentences": [
-                "{sentence.0}."
-            ]
-        },
-        {
-            "type": [
-                "positive_negative",
-                "neutral_negative",
-                "negative_positive"
-            ],
-            "sentences": [
-                "{sentence.0}, but {sentence.1}."
-            ]
-        },
-        {
-            "type": [
-                "positive_positive",
-                "na_na"
-            ],
-            "sentences": [
-                "{sentence.0}, and {sentence.1}."
-            ]
-        },
-        {
-            "type": [
-                "positive_neutral",
-                "negative_negative",
-                "neutral_positive",
-                "neutral_neutral",
-                "negative_neutral"
-            ],
-            "sentences": [
-                "{sentence.0} and {sentence.1}."
-            ]
-        }
-    ]
+    "compoundSentences": {
+        "default": [
+            {
+                "type": [
+                    "positive",
+                    "neutral",
+                    "negative",
+                    "na"
+                ],
+                "sentences": [
+                    "{sentence.0}."
+                ]
+            },
+            {
+                "type": [
+                    "positive_negative",
+                    "neutral_negative",
+                    "negative_positive"
+                ],
+                "sentences": [
+                    "{sentence.0}, but {sentence.1}."
+                ]
+            },
+            {
+                "type": [
+                    "positive_positive",
+                    "na_na"
+                ],
+                "sentences": [
+                    "{sentence.0}, and {sentence.1}."
+                ]
+            },
+            {
+                "type": [
+                    "positive_neutral",
+                    "negative_negative",
+                    "neutral_positive",
+                    "neutral_neutral",
+                    "negative_neutral"
+                ],
+                "sentences": [
+                    "{sentence.0} and {sentence.1}."
+                ]
+            }
+        ]
+    }
 }

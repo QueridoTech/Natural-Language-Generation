@@ -1,13 +1,14 @@
+(function() {
 dataConfig     = require("./data_config.coffee")
 sentenceConfig = require("./sentence_config.coffee")
 config         = require("./resources/config.json")
 sentences      = require("./resources/sentences.json")
-input          = require("./resources/input3.json")
+input          = require("./resources/input2.json")
 _              = require("underscore")
 
-#
+###
 # Data Preparation
-# 
+###
 
 ###
 Generate sentences from a list of data
@@ -232,21 +233,38 @@ Get a valid list of sentences for random selecting
 @param  {array}  simpleSentences - sentences from all types
 @return {array}  array of valid sentences
 ###
-getSimpleSentenceList = (data, simpleSentencese) ->
+getSimpleSentenceList = (data, simpleSentences) ->
   # Override
   if(sentenceConfig[data.sentenceType] && sentenceConfig[data.sentenceType].getSimpleSentenceList)
     console.log("Override " + data.title + " for getSimpleSentenceList")
-    return sentenceConfig[data.sentenceType].getSimpleSentenceList(data, simpleSentencese)
+    return sentenceConfig[data.sentenceType].getSimpleSentenceList(data, simpleSentences)
   # Default
-  if(typeof sentences.simpleSentences[data.sentenceType] != 'undefined' && typeof sentences.simpleSentences[data.sentenceType][data.levelType] != 'undefined' && typeof sentences.simpleSentences[data.sentenceType][data.level.toString()] != 'undefined')
+  if(typeof simpleSentences[data.sentenceType] != 'undefined' && typeof simpleSentences[data.sentenceType][data.levelType] != 'undefined' && typeof simpleSentences[data.sentenceType][data.level.toString()] != 'undefined')
     if typeof data.oldData != 'undefined'
-      sentences.simpleSentences[data.sentenceType][data.levelType][data.level.toString()]
+      simpleSentences[data.sentenceType][data.levelType][data.level.toString()]
     else
-      sentences.simpleSentences[data.sentenceType][data.levelType]
+      simpleSentences[data.sentenceType][data.levelType]
   else if typeof data.oldData != 'undefined'
-    sentences.simpleSentences['default'][data.levelType][data.level.toString()]
+    simpleSentences['default'][data.levelType][data.level.toString()]
   else
-    sentences.simpleSentences['default']['na']
+    simpleSentences['default']['na']
+
+###
+Get a valid list of compound sentences
+@param  {object} data - data object
+@param  {array}  compoundSentences - sentences from all types
+@return {array}  array of valid sentences
+###
+getCompoundSentenceList = (data, compoundSentences) ->
+  # Override
+  if(sentenceConfig[data.sentenceType] && sentenceConfig[data.sentenceType].getCompoundSentenceList)
+    console.log("Override " + data.title + " for getSimpleSentenceList")
+    return sentenceConfig[data.sentenceType].getCompoundSentenceList(data, compoundSentences)
+  # Default
+  if(typeof compoundSentences[data.sentenceType] != 'undefined')
+    compoundSentences[data.sentenceType]
+  else
+    compoundSentences['default']
 
 ###
 Combine two simple sentencese that are in the same sentenceGroup
@@ -257,7 +275,8 @@ buildCompoundSentence = (data) ->
   types = _.pluck(data, 'levelType');
   type = types.join('_')
   moreDisplayInfo = _.pluck(addSimpleSentence(data), 'displayInfo');
-  selectedSentences = _.find(sentences.compoundSentences, (group) ->
+  compoundSentences = getCompoundSentenceList(data, sentences.compoundSentences)
+  selectedSentences = _.find(compoundSentences, (group) ->
     _.contains(group.type, type);
   )
   capitalize(replaceCombinedStr(selectedSentences.sentences, moreDisplayInfo))
@@ -306,9 +325,6 @@ Change the first character of the string to capital
 ###
 capitalize = (data) ->
   data.charAt(0).toUpperCase() + data.slice(1);
+}.call(this));
 
-console.log generate(input.data, 50)
-
-# TODO
-# - build compound sentence by difference combination of levels?
-# - full, medium, short sentences
+console.log generate(input.data, 3)
