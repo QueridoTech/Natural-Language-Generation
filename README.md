@@ -410,25 +410,25 @@ NL.addType: (title, func = {})
 
 ##### Functions available for overriding
 
-1. ```getDifference(data)```
-* Get the difference between old value and current value
-* @param  {object}        data object (see the constructor properties)
-* @return {number/string} difference value or 'na' if there is no oldData
+1. **getDifference(data)**
+  - Get the difference between old value and current value
+  - @param  {object}        data object (see the constructor properties)
+  - @return {number/string} difference value or 'na' if there is no oldData
 
-2. ```getDisplayInfo(data)```
-* Prepare strings required to show in the sentence
-* @param  {object} data object (see the constructor properties)
-* @return {object} information required to display in the sentence (default is ```title```, ```newData```, ```oldData```, and ```difference```)
+2. **getDisplayInfo(data)**
+  - Prepare strings required to show in the sentence
+  - @param  {object} data object (see the constructor properties)
+  - @return {object} information required to display in the sentence (default is ```title```, ```newData```, ```oldData```, and ```difference```)
 
-3. ```calculatePriority(data)```
-* Calculate the priority of change
-* @param  {object} data object (see the constructor properties)
-* @return {number} new priority
+3. **calculatePriority(data)**
+  - Calculate the priority of change
+  - @param  {object} data object (see the constructor properties)
+  - @return {number} new priority
 
-4. ```calculateLevel(data)```
-* Calculate the intesity of change
-* @param  {object} data object (see the constructor properties)
-* @return {number} intensity of the change (from -3 to 3)
+4. **calculateLevel(data)**
+  - Calculate the intesity of change
+  - @param  {object} data object (see the constructor properties)
+  - @return {number} intensity of the change (from -3 to 3)
 
 #### Add dataType
 Data type can be added using addType() method
