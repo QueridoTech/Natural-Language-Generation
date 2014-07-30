@@ -89,13 +89,13 @@ class NaturalLanguage
   ###*
    * Add more required attributes
    * ------------------------------------------------------------
-   * @name getAttrs
+   * @name setAttrs
    * @param  {array}  data - array of inputs
    * @return {Object} new data with more attributes
    * @private
   ###
 
-  getAttrs = (data) ->
+  setAttrs = (data) ->
     _.each data, (item, i) ->
       if item.options isnt undefined
         item.options = _.extend(config.default, item.options)
@@ -104,8 +104,8 @@ class NaturalLanguage
       item.dataType     = 'default' unless item.dataType
       # Custom for more attributes
 
-      if global.dataConfig[item.dataType] and global.dataConfig[item.dataType].getAttrs
-        item = global.dataConfig[item.dataType].getAttrs item
+      if global.dataConfig[item.dataType] and global.dataConfig[item.dataType].setAttrs
+        item = global.dataConfig[item.dataType].setAttrs item
 
       # Default attributes
       item.alwaysShow   = false if typeof item.alwaysShow is 'undefined'
@@ -466,7 +466,7 @@ class NaturalLanguage
    * @public
   ###
   generate: (nData = -1) ->
-    data = getAttrs @data
+    data = setAttrs @data
     data = selectData data, nData
     result = buildSentences data
     # for i of data

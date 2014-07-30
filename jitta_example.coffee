@@ -4,7 +4,7 @@ NL = new NaturalLanguage input.data
 
 # Jitta Line
 NL.addType "jittaline", {
-  getAttrs: (data) ->
+  setAttrs: (data) ->
     data.oldNumber = @getNumber(data.oldData) if(typeof data.oldData != 'undefined')
     data.newNumber = @getNumber(data.newData)
     data
@@ -152,7 +152,7 @@ NL.addType "sign", {
       "More than 50% in 5 years": "-2"
     }
   },
-  getAttrs: (data) ->
+  setAttrs: (data) ->
     data.newScore = @getScore(data.title, data.newData)
     if(typeof data.oldData != "undefined")
       data.oldScore = @getScore(data.title, data.oldData)
