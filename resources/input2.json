@@ -1,95 +1,287 @@
 {
-	"data": [
-		{
-			"title": "Jitta Line",
-			"oldData": "52.62% Below Jitta Line",
-			"newData": "62.62% Below Jitta Line",
-			"alwaysShow": true
-		},
-		{
-			"title": "Price",
-			"oldData": 95.22,
-			"newData": 80.20,
-			"currency": "baht",
-			"alwaysShow": false
-		},
-		{
-			"title": "Jitta Score",
-			"oldData": 7.10,
-			"newData": 6.97,
-			"alwaysShow": true
-		},
-		{
-			"title": "Growth Opportunity",
-			"oldData": 90,
-			"newData": 60,
-			"alwaysShow": false
-		},
-		{
-			"title": "Recent Business Performance",
-			"oldData": 35,
-			"newData": 50,
-			"alwaysShow": false
-		},
-		{
-			"title": "Financial Strength",
-			"oldData": 100,
-			"newData": 100,
-			"alwaysShow": false
-		},
-		{
-			"title": "Return to Share Holder",
-			"oldData": 68,
-			"newData": 69,
-			"alwaysShow": false
-		},
-		{
-			"title": "Competitive Advantage",
-			"oldData": 98,
-			"newData": 100,
-			"alwaysShow": false
-		},
-		{
-			"title": "Revenue and Earning",
-			"oldData": "Earning Declined",
-			"newData": "Earning loss detected in the past years",
-			"alwaysShow": false
-		},
-		{
-			"title": "Operating Margin",
-			"oldData": "-",
-			"newData": "Declined",
-			"alwaysShow": false
-		},
-		{
-			"title": "Debt Level",
-			"oldData": "Low Long Term Debt",
-			"newData": "Return on Equity",
-			"alwaysShow": false
-		},
-		{
-			"title": "Return on Equity",
-			"oldData": "Consistently High",
-			"newData": "Consistently High",
-			"alwaysShow": false
-		},
-		{
-			"title": "Dividend Payout",
-			"oldData": "Every year",
-			"newData": "Increasing Every Year",
-			"alwaysShow": false
-		},
-		{
-			"title": "Share Repurchase",
-			"oldData": "-",
-			"newData": "Every year",
-			"alwaysShow": false
-		},
-		{
-			"title": "CapEx",
-			"oldData": "-",
-			"newData": "Very Low",
-			"alwaysShow": false
-		}
-	]
+    "data": [
+        {
+            "title": "Jitta Line",
+            "oldData": "52.62% Below Jitta Line",
+            "newData": "62.62% Below Jitta Line",
+            "alwaysShow": true,
+            "options": {
+                "priority": {
+                    "init": 100,
+                    "negativeFactor": 2,
+                    "positiveFactor": 1
+                },
+                "level": {
+                    "threshold": 0.09,
+                    "sensitiveness": 1
+                }
+            },
+            "dataType": "jittaline",
+            "sentenceType": "jittaline",
+            "contentGroup": "jittaline"
+        },
+        {
+            "title": "Price",
+            "oldData": 95.22,
+            "newData": 80.2,
+            "currency": "baht",
+            "options": {
+                "priority": {
+                    "init": 50,
+                    "negativeFactor": 20,
+                    "positiveFactor": 100
+                },
+                "level": {
+                    "threshold": 0.09,
+                    "sensitiveness": 1
+                }
+            },
+            "dataType": "score",
+            "contentGroup": "score",
+            "precision": 1
+        },
+        {
+            "title": "Jitta Score",
+            "oldData": 7.10,
+            "newData": 6.97,
+            "alwaysShow": true,
+            "options": {
+                "priority": {
+                    "init": 50,
+                    "negativeFactor": 20,
+                    "positiveFactor": 100
+                },
+                "level": {
+                    "threshold": 0.09,
+                    "sensitiveness": 1
+                }
+            },
+            "dataType": "score",
+            "contentGroup": "score",
+            "precision": 1
+        },
+        {
+            "title": "Growth Opportunity",
+            "oldData": 90,
+            "newData": 60,
+            "options": {
+                "priority": {
+                    "init": 1,
+                    "negativeFactor": 0.1,
+                    "positiveFactor": 0.1
+                },
+                "level": {
+                    "threshold": 5,
+                    "sensitiveness": 10
+                }
+            },
+            "dataType": "factor",
+            "contentGroup": "factor"
+        },
+        {
+            "title": "Recent Business Performance",
+            "oldData": 35,
+            "newData": 50,
+            "options": {
+                "priority": {
+                    "init": 1,
+                    "negativeFactor": 0.1,
+                    "positiveFactor": 0.1
+                },
+                "level": {
+                    "threshold": 5,
+                    "sensitiveness": 10
+                }
+            },
+            "dataType": "factor",
+            "contentGroup": "factor"
+        },
+        {
+            "title": "Financial Strength",
+            "oldData": 100,
+            "newData": 100,
+            "options": {
+                "priority": {
+                    "init": 1,
+                    "negativeFactor": 0.1,
+                    "positiveFactor": 0.1
+                },
+                "level": {
+                    "threshold": 5,
+                    "sensitiveness": 10
+                }
+            },
+            "dataType": "factor",
+            "contentGroup": "factor"
+        },
+        {
+            "title": "Return to Share Holder",
+            "oldData": 68,
+            "newData": 69,
+            "options": {
+                "priority": {
+                    "init": 1,
+                    "negativeFactor": 0.1,
+                    "positiveFactor": 0.1
+                },
+                "level": {
+                    "threshold": 5,
+                    "sensitiveness": 10
+                }
+            },
+            "dataType": "factor",
+            "contentGroup": "factor"
+        },
+        {
+            "title": "Competitive Advantage",
+            "oldData": 98,
+            "newData": 100,
+            "options": {
+                "priority": {
+                    "init": 1,
+                    "negativeFactor": 0.1,
+                    "positiveFactor": 0.1
+                },
+                "level": {
+                    "threshold": 5,
+                    "sensitiveness": 10
+                }
+            },
+            "dataType": "factor",
+            "contentGroup": "factor"
+        },
+        {
+            "title": "Revenue and Earning",
+            "oldData": "Earning Declined",
+            "newData": "Earning loss detected in the past years",
+            "options": {
+                "priority": {
+                    "init": 1,
+                    "negativeFactor": 10,
+                    "positiveFactor": 10
+                },
+                "level": {
+                    "threshold": 1,
+                    "sensitiveness": 1
+                }
+            },
+            "dataType": "sign",
+            "sentenceType": "earning",
+            "contentGroup": "sign"
+        },
+        {
+            "title": "Operating Margin",
+            "oldData": "-",
+            "newData": "Declined",
+            "options": {
+                "priority": {
+                    "init": 1,
+                    "negativeFactor": 10,
+                    "positiveFactor": 10
+                },
+                "level": {
+                    "threshold": 1,
+                    "sensitiveness": 1
+                }
+            },
+            "dataType": "sign",
+            "sentenceType": "operating",
+            "contentGroup": "sign"
+        },
+        {
+            "title": "Debt Level",
+            "oldData": "Low Long Term Debt",
+            "newData": "Low Long Term Debt",
+            "options": {
+                "priority": {
+                    "init": 1,
+                    "negativeFactor": 10,
+                    "positiveFactor": 10
+                },
+                "level": {
+                    "threshold": 1,
+                    "sensitiveness": 1
+                }
+            },
+            "dataType": "sign",
+            "sentenceType": "debt",
+            "contentGroup": "sign"
+        },
+        {
+            "title": "Return on Equity",
+            "oldData": "Consistently High",
+            "newData": "Consistently High",
+            "options": {
+                "priority": {
+                    "init": 1,
+                    "negativeFactor": 10,
+                    "positiveFactor": 10
+                },
+                "level": {
+                    "threshold": 1,
+                    "sensitiveness": 1
+                }
+            },
+            "dataType": "sign",
+            "sentenceType": "roe",
+            "contentGroup": "sign"
+        },
+        {
+            "title": "Dividend Payout",
+            "oldData": "Every year",
+            "newData": "Increasing Every Year",
+            "options": {
+                "priority": {
+                    "init": 1,
+                    "negativeFactor": 10,
+                    "positiveFactor": 10
+                },
+                "level": {
+                    "threshold": 1,
+                    "sensitiveness": 1
+                }
+            },
+            "dataType": "sign",
+            "sentenceType": "dividend",
+            "contentGroup": "sign"
+        },
+        {
+            "title": "Share Repurchase",
+            "oldData": "-",
+            "newData": "Every year",
+            "options": {
+                "priority": {
+                    "init": 1,
+                    "negativeFactor": 10,
+                    "positiveFactor": 10
+                },
+                "level": {
+                    "threshold": 1,
+                    "sensitiveness": 1
+                }
+            },
+            "dataType": "sign",
+            "sentenceType": "repurchase",
+            "contentGroup": "sign"
+        },
+        {
+            "title": "CapEx",
+            "oldData": "-",
+            "newData": "Very Low",
+            "options": {
+                "priority": {
+                    "init": 1,
+                    "negativeFactor": 10,
+                    "positiveFactor": 10
+                },
+                "level": {
+                    "threshold": 1,
+                    "sensitiveness": 1
+                }
+            },
+            "dataType": "sign",
+            "sentenceType": "capex",
+            "contentGroup": "sign"
+        }
+    ]
 }

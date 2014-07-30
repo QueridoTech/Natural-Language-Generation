@@ -1,126 +1,4 @@
 ###*
- * ------------------------------------------------------------
- * Prepare resource
- * ------------------------------------------------------------
-###
-_              = require 'underscore'
-# dataConfig     = require './data_config.coffee'
-dataConfig = {}
-# sentenceConfig = require './sentence_config.coffee'
-sentenceConfig = {}
-# config         = require './resources/config.json'
-config = {
-  "default": {
-    "priority": {
-      "init": 1,
-      "negativeFactor": 20,
-      "positiveFactor": 100
-    },
-    "level": {
-      "threshold": 0.09,
-      "sensitiveness": 1
-    }
-  }
-}
-# sentences      = require './resources/sentences.json'
-sentences = {
-    "simpleSentences": {
-        "default": {
-            "na": [
-                "{title} is {newData}"
-            ],
-            "positive": {
-                "1": [
-                    "{title} has slightly raised to {newData}",
-                    "{title} has raised slightly to {newData}",
-                    "{title} has increased a bit to {newData}"
-                ],
-                "2": [
-                    "{title} has raised from {oldData} to {newData}",
-                    "{title} has raised to {newData}",
-                    "{title} has raised for {difference}",
-                    "{title} has increased by {difference} to {newData}"
-                ],
-                "3": [
-                    "{title} has significantly increased by {difference} to {newData}",
-                    "{title} has extremely raised to {newData}",
-                    "{title} has soared from {oldData} to {newData}, a {difference} increase"
-                ]
-            },
-            "neutral": {
-                "0": [
-                    "{title} is still good at {newData}",
-                    "{title} looks good at {newData}"
-                ]
-            },
-            "negative": {
-                "-1": [
-                    "{title} has slightly dropped to {newData}",
-                    "{title} has slightly fallen about {difference}"
-                ],
-                "-2": [
-                    "{title} has dropped from {oldData} to {newData}",
-                    "{title} has dropped to {newData}"
-                ],
-                "-3": [
-                    "{title} has significantly decreased by {difference} to {newData}",
-                    "{title} has extremely dropped to {newData}"
-                ]
-            }
-        }
-    },
-    "compoundSentences": {
-        "default": [
-            {
-                "type": [
-                    "positive",
-                    "neutral",
-                    "negative",
-                    "na"
-                ],
-                "sentences": [
-                    "{sentence.0}."
-                ]
-            },
-            {
-                "type": [
-                    "positive_negative",
-                    "neutral_negative",
-                    "negative_positive"
-                ],
-                "sentences": [
-                    "{sentence.0}, but {sentence.1}."
-                ]
-            },
-            {
-                "type": [
-                    "positive_positive",
-                    "na_na"
-                ],
-                "sentences": [
-                    "{sentence.0}, and {sentence.1}."
-                ]
-            },
-            {
-                "type": [
-                    "positive_neutral",
-                    "negative_negative",
-                    "neutral_positive",
-                    "neutral_neutral",
-                    "negative_neutral"
-                ],
-                "sentences": [
-                    "{sentence.0} and {sentence.1}."
-                ]
-            }
-        ]
-    }
-}
-input          = require './resources/input.json'
-words          = require './resources/words.json'
-
-
-###*
  * Natural Language base class
  * ------------------------------------------------------------
  * @name NaturalLanguage
@@ -128,16 +6,24 @@ words          = require './resources/words.json'
  * @constructor
  * @param {Array} data - a list of inputs
 ###
-
+exports.NaturalLanguage = 
 class NaturalLanguage
 
-  global = null
+  ###*
+   * ------------------------------------------------------------
+   * Prepare resource
+   * ------------------------------------------------------------
+  ###
+  global    = null
+  _         = require 'underscore'
+  config    = require './resources/config.json'
+  sentences = require './resources/sentences.json'
 
   constructor: (data) ->
-    @data = data
-    global = @
-    # @generate(nData)
-
+    @data           = data
+    @dataConfig     = {}
+    @sentenceConfig = {}
+    global          = @
 
   ###*
    * ------------------------------------------------------------
@@ -218,9 +104,8 @@ class NaturalLanguage
       item.dataType     = 'default' unless item.dataType
       # Custom for more attributes
 
-      if dataConfig[item.dataType] and dataConfig[item.dataType].getAttrs
-        console.log "Override #{item.title} for getAttrs"
-        item = dataConfig[item.dataType].getAttrs item
+      if global.dataConfig[item.dataType] and global.dataConfig[item.dataType].getAttrs
+        item = global.dataConfig[item.dataType].getAttrs item
 
       # Default attributes
       item.alwaysShow   = false if typeof item.alwaysShow is 'undefined'
@@ -247,9 +132,8 @@ class NaturalLanguage
 
   getDifference = (data) ->
     # Override
-    if dataConfig[data.dataType] and dataConfig[data.dataType].getDifference
-      console.log "Override #{data.title} for getDifference"
-      return dataConfig[data.dataType].getDifference data
+    if global.dataConfig[data.dataType] and global.dataConfig[data.dataType].getDifference
+      return global.dataConfig[data.dataType].getDifference data
 
     # Default
     if typeof data.oldData isnt 'undefined' and typeof data.oldData == 'number'
@@ -269,9 +153,8 @@ class NaturalLanguage
 
   getDisplayInfo = (data) ->
     # Override
-    if dataConfig[data.dataType] and dataConfig[data.dataType].getDisplayInfo
-      console.log "Override #{data.title} for getDisplayInfo"
-      return dataConfig[data.dataType].getDisplayInfo data
+    if global.dataConfig[data.dataType] and global.dataConfig[data.dataType].getDisplayInfo
+      return global.dataConfig[data.dataType].getDisplayInfo data
 
     # Default
     result = {}
@@ -303,13 +186,12 @@ class NaturalLanguage
 
   calculatePriority = (data) ->
     # Override
-    if dataConfig[data.dataType] and dataConfig[data.dataType].calculatePriority
-      console.log "Override #{data.title} for calculatePriority"
+    if global.dataConfig[data.dataType] and global.dataConfig[data.dataType].calculatePriority
 
       unless typeof data.priority is 'undefined'
         data.options.priority.init = data.priority
 
-      return dataConfig[data.dataType]
+      return global.dataConfig[data.dataType]
             .calculatePriority data.difference, data.options.priority
 
     # Default
@@ -338,9 +220,8 @@ class NaturalLanguage
 
   calculateLevel = (data) ->
     # Override
-    if dataConfig[data.dataType] and dataConfig[data.dataType].calculateLevel
-      console.log "Override #{data.title} for calculateLevel"
-      return dataConfig[data.dataType]
+    if global.dataConfig[data.dataType] and global.dataConfig[data.dataType].calculateLevel
+      return global.dataConfig[data.dataType]
              .calculateLevel data.difference, data.options.level
 
     # Default
@@ -443,10 +324,9 @@ class NaturalLanguage
   getSimpleSentenceList = (data, simpleSentencese) ->
 
     # Override
-    if sentenceConfig[data.sentenceType] \
-      and sentenceConfig[data.sentenceType].getSimpleSentenceList
-        console.log "Override #{data.title} for getSimpleSentenceList"
-        return sentenceConfig[data.sentenceType]
+    if global.sentenceConfig[data.sentenceType] \
+      and global.sentenceConfig[data.sentenceType].getSimpleSentenceList
+        return global.sentenceConfig[data.sentenceType]
                .getSimpleSentenceList data, simpleSentencese
 
     # Default
@@ -478,7 +358,6 @@ class NaturalLanguage
   ###
 
   buildSimpleSentence = (data) ->
-    # console.log data
     simpleSentences = getSimpleSentenceList data, sentences.simpleSentences
     replaceStr simpleSentences, data.displayInfo
 
@@ -509,9 +388,8 @@ class NaturalLanguage
 
   getCompoundSentenceList = (data, compoundSentences) ->
     # Override
-    if(sentenceConfig[data.sentenceType] && sentenceConfig[data.sentenceType].getCompoundSentenceList)
-      console.log("Override " + data.title + " for getSimpleSentenceList")
-      return sentenceConfig[data.sentenceType].getCompoundSentenceList(data, compoundSentences)
+    if(global.sentenceConfig[data.sentenceType] && global.sentenceConfig[data.sentenceType].getCompoundSentenceList)
+      return global.sentenceConfig[data.sentenceType].getCompoundSentenceList(data, compoundSentences)
     # Default
     if sentences.compoundSentences[data.sentenceType] isnt undefined
       compoundSentences[data[0].sentenceType]
@@ -568,16 +446,16 @@ class NaturalLanguage
     result
 
   addType: (title, func = {}) ->
-    if dataConfig[title]
-      dataConfig[title] = _.extend(dataConfig[title], func)
+    if @dataConfig[title]
+      @dataConfig[title] = _.extend(@dataConfig[title], func)
     else 
-      dataConfig[title] = func
+      @dataConfig[title] = func
 
   addSentence: (title, func = null) ->
-    if sentenceConfig[title]
-      sentenceConfig[title] = _.extend(sentenceConfig[title], func)
+    if @sentenceConfig[title]
+      @sentenceConfig[title] = _.extend(@sentenceConfig[title], func)
     else 
-      sentenceConfig[title] = func
+      @sentenceConfig[title] = func
 
   ###*
    * Generate sentences from a list of data
@@ -589,243 +467,8 @@ class NaturalLanguage
   ###
   generate: (nData = -1) ->
     data = getAttrs @data
-    # console.log data
     data = selectData data, nData
-    # console.log data
     result = buildSentences data
-    # console.log result
+    # for i of data
+    #   console.log data[i].title, ": ", data[i].priority
     return result.join ' '
-
-# NL = new NaturalLanguage [{
-#       "title": "Growth Opportunity",
-#       "newData": 60,
-#       "alwaysShow": false
-#     }]
-# NL = new NaturalLanguage [{
-#       "title": "Growth Opportunity",
-#       "newData": 60,
-#       "oldData": 90,
-#       "alwaysShow": false
-#     }]
-# NL = new NaturalLanguage [{
-#       "title": "Growth Opportunity",
-#       "newData": 60,
-#       "oldData": 90,
-#       "alwaysShow": false,
-#       "options": {
-#         "priority": {
-#           "init": 1,
-#           "negativeFactor": 0.1,
-#           "positiveFactor": 0.1
-#         },
-#         "level": {
-#           "threshold": 5,
-#           "sensitiveness": 10
-#         }
-#       }
-#     }]
-# NL = new NaturalLanguage [{
-#       "title": "Operating Margin",
-#       "newData": "Declined",
-#       "alwaysShow": false
-# }]
-# NL = new NaturalLanguage [{
-#       "title": "Operating Margin",
-#       "oldData": "-",
-#       "newData": "Declined",
-#       "alwaysShow": false
-# }]
-# NL = new NaturalLanguage [{
-#       "title": "Share Repurchase",
-#       "newData": "Every year",
-#       "alwaysShow": false,
-#       "dataType": "sign",
-#       "sentenceType": "repurchase"
-# }]
-# NL = new NaturalLanguage [{
-#       "title": "Share Repurchase",
-#       "oldData": "Every year",
-#       "newData": "Every year",
-#       "alwaysShow": false,
-#       "dataType": "sign",
-#       "sentenceType": "repurchase"
-# }]
-# NL = new NaturalLanguage [
-#   {
-#     "title": "Share Repurchase",
-#     "oldData": "Every year",
-#     "newData": "Every year",
-#     "alwaysShow": false,
-#     "dataType": "sign",
-#     "sentenceType": "repurchase"
-#   },
-#   {
-#     "title": "Growth Opportunity",
-#     "newData": 60,
-#     "oldData": 90,
-#     "alwaysShow": false
-#   }
-# ]
-NL = new NaturalLanguage [
-  {
-    "title": "Share Repurchase",
-    "oldData": "Every year",
-    "newData": "Every year",
-    "dataType": "sign",
-    "sentenceType": "repurchase",
-    "contentGroup": "sign"
-  },
-  {
-    "title": "Growth Opportunity",
-    "newData": 60,
-    "oldData": 90,
-    "contentGroup": "factor"
-  },
-  {
-    "title": "Financial Strength",
-    "oldData": 100,
-    "newData": 100,
-    "contentGroup": "factor",
-    "alwaysShow": true
-  }
-]
-# NL = new NaturalLanguage [{
-#       "title": "Share Repurchase",
-#       "oldData": "-",
-#       "newData": "Every year",
-#       "alwaysShow": false,
-#       "dataType": "sign"
-# }]
-# NL.addType "Share Repurchase", {
-
-# }
-# NL = new NaturalLanguage [{
-#       "title": "Price",
-#       "newData": 80.20,
-#       "currency": "baht",
-#       "alwaysShow": false
-# }]
-NL.addType "sign", {
-  words: {
-    "Revenue and Earning": {
-      "Consistent": "+1",
-      "Consistent Growth": "+2", 
-      "Consistently High Growth": "+3",
-      "-": "0",
-      "Revenue loss detected in the past years": "-2",
-      "Earning loss detected in the past years": "-2",
-      "Revenue Declined": "-1",
-      "Earning Declined": "-1"
-    },
-    "Operating Margin": {
-      "-": "0",
-      "Consistent": "+1",
-      "Expansion": "+2",
-      "Inconsistent": "-1",
-      "Declined": "-2"
-    },
-    "Debt Level": {
-      "-": "0",
-      "Low .*": "+1",
-      "No .*": "+2",
-      "High .* in the past 5 years": "-1",
-      "High .*": "-2",
-      "Very High .*": "-3"
-    },
-    "Recent Business Performance":{
-      "-": "0",
-      "Earning decline detected in the last 4 quarters": "-3",
-      "Earning declined in the last quarter": "-1",
-      "Earning declined in the last year": "-2"
-    },
-    "Return on Equity": {
-      "-": "0",
-      "Consistently High": "+2"
-    },
-    "Dividend Payout": {
-      "-": "0",
-      "Every year": "+1",
-      "Increasing Every Year": "+2"
-    },
-    "Share Repurchase": {
-      "-": "0",
-      "Every year": "+2"
-    },
-    "CapEx": {
-      "-": "0",
-      "Very Low": "+2",
-      "Very High": "-2"
-    },
-    "Recent IPO": {
-      "-": "0",
-      "Less than 3 years": "+1"
-    },
-    "New Share Issued": {
-      "-": "0",
-      "More than 50% in 5 years": "-2"
-    }
-  },
-  getAttrs: (data) ->
-    data.newScore = @getScore(data.title, data.newData)
-    if(typeof data.oldData != "undefined")
-      data.oldScore = @getScore(data.title, data.oldData)
-    if(data.newScore == '0')
-      data.hidden = true
-    data
-
-  getDisplayInfo: (data) ->
-    precision = data.precision
-    result = {}
-    result.title = data.title.toLowerCase()
-    result.title = "CapEx" if data.title == "CapEx"
-    result.newData = data.newData.toLowerCase()
-    if(typeof data.oldData != "undefined")
-      result.oldData = data.oldData.toLowerCase()
-    result
-
-  getScore: (title, data) ->
-    for item of @words[title]
-      pattern = new RegExp(item, "g");
-      if pattern.test(data)
-        return @words[title][item]
-    return null
-
-  getDifference: (data) ->
-    if(typeof data.oldData != "undefined")
-      parseInt(data.newScore) - parseInt(data.oldScore)
-    else
-      "na"  
-}
-NL.addSentence "repurchase", {
-  simpleSentences: {
-    "+2": {
-        "+2": [
-            "there is still {title} {newData}"
-        ]
-    },
-    "0": {
-        "+2": [
-            "there is {title} {newData}"
-        ]
-    }
-  }
-  getSimpleSentenceList: (data, simpleSentences) ->
-    oldScore = if typeof data.oldScore == "undefined" then 0 else data.oldScore
-    @simpleSentences[oldScore][data.newScore]
-}
-# NL.addType "Price", {
-#     "priority": {
-#       "init": 10,
-#       "negativeFactor": 2,
-#       "positiveFactor": 1
-#     },
-#     "level": {
-#       "threshold": 5,
-#       "sensitiveness": 5
-#     },
-#     "dataType": "price",
-#     "sentenceType": "default",
-#     "contentGroup": "price",
-#     "precision": 0
-#   }
-console.log NL.generate(2)
