@@ -110,7 +110,7 @@ NL.addType "sign", {
     },
     ...
   },
-  getAttrs: (data) ->
+  setAttrs: (data) ->
     data.newScore = @getScore(data.title, data.newData)
     if(typeof data.oldData != "undefined")
       data.oldScore = @getScore(data.title, data.oldData)
@@ -142,7 +142,7 @@ NL.addType "sign", {
       "na"  
 }
 console.log NL.generate()
-# Override Share Repurchase for getAttrs
+# Override Share Repurchase for setAttrs
 # Override Share Repurchase for getDifference
 # Override Share Repurchase for getDisplayInfo
 # Output: Share repurchase is every year.
@@ -158,7 +158,7 @@ NL = new NaturalLanguage [{
 }]
 NL.addType "sign", { .. Same as "sign" type above .. }
 console.log NL.generate()
-# Override Share Repurchase for getAttrs
+# Override Share Repurchase for setAttrs
 # Override Share Repurchase for getDifference
 # Override Share Repurchase for getDisplayInfo
 # Output: Share repurchase has raised from - to every year.
@@ -191,7 +191,7 @@ NL.addSentence "repurchase", {
     @simpleSentences[oldScore][data.newScore]
 }
 console.log NL.generate()
-# Override Share Repurchase for getAttrs
+# Override Share Repurchase for setAttrs
 # Override Share Repurchase for getDifference
 # Override Share Repurchase for getDisplayInfo
 # Override Share Repurchase for getSimpleSentenceList
@@ -210,7 +210,7 @@ NL = new NaturalLanguage [{
 NL.addType "sign", { .. Same as "sign" type above .. }
 NL.addSentence "repurchase", { .. Same as "repurchase" type above .. }
 console.log NL.generate()
-# Override Share Repurchase for getAttrs
+# Override Share Repurchase for setAttrs
 # Override Share Repurchase for getDifference
 # Override Share Repurchase for getDisplayInfo
 # Override Share Repurchase for getSimpleSentenceList
@@ -236,7 +236,7 @@ NL = new NaturalLanguage [
 NL.addType "sign", { .. Same as "sign" type above .. }
 NL.addSentence "repurchase", { .. Same as "repurchase" type above .. }
 console.log NL.generate()
-# Override Share Repurchase for getAttrs
+# Override Share Repurchase for setAttrs
 # Override Share Repurchase for getDifference
 # Override Share Repurchase for getDisplayInfo
 # Override Share Repurchase for getSimpleSentenceList
@@ -264,7 +264,7 @@ NL = new NaturalLanguage [
 NL.addType "sign", { .. Same as "sign" type above .. }
 NL.addSentence "repurchase", { .. Same as "repurchase" type above .. }
 console.log NL.generate()
-# Override Share Repurchase for getAttrs
+# Override Share Repurchase for setAttrs
 # Override Share Repurchase for getDifference
 # Override Share Repurchase for getDisplayInfo
 # Override Share Repurchase for getSimpleSentenceList
@@ -298,7 +298,7 @@ NL = new NaturalLanguage [
 NL.addType "sign", { .. Same as "sign" type above .. }
 NL.addSentence "repurchase", { .. Same as "repurchase" type above .. }
 console.log NL.generate()
-# Override Share Repurchase for getAttrs
+# Override Share Repurchase for setAttrs
 # Override Share Repurchase for getDifference
 # Override Share Repurchase for getDisplayInfo
 # Override Share Repurchase for getSimpleSentenceList
@@ -332,7 +332,7 @@ NL = new NaturalLanguage [
 NL.addType "sign", { .. Same as "sign" type above .. }
 NL.addSentence "repurchase", { .. Same as "repurchase" type above .. }
 console.log NL.generate(2) # Put number of data to present
-# Override Share Repurchase for getAttrs
+# Override Share Repurchase for setAttrs
 # Override Share Repurchase for getDifference
 # Override Share Repurchase for getDisplayInfo
 # Override Share Repurchase for getSimpleSentenceList
@@ -366,7 +366,7 @@ NL = new NaturalLanguage [
 NL.addType "sign", { .. Same as "sign" type above .. }
 NL.addSentence "repurchase", { .. Same as "repurchase" type above .. }
 console.log NL.generate(2) # Put number of data to present
-# Override Share Repurchase for getAttrs
+# Override Share Repurchase for setAttrs
 # Override Share Repurchase for getDifference
 # Override Share Repurchase for getDisplayInfo
 # Override Share Repurchase for getSimpleSentenceList
@@ -410,25 +410,30 @@ NL.addType: (title, func = {})
 
 ##### Functions available for overriding
 
-1. ```getDifference(data)```
-* Get the difference between old value and current value
-* @param  {object}        data object (see the constructor properties)
-* @return {number/string} difference value or 'na' if there is no oldData
+1. **addAttrs(data)**
+  - Add more required attributes
+  - @param  {object} data object (see the constructor properties)
+  - @return {object} new data with more attributes
 
-2. ```getDisplayInfo(data)```
-* Prepare strings required to show in the sentence
-* @param  {object} data object (see the constructor properties)
-* @return {object} information required to display in the sentence (default is ```title```, ```newData```, ```oldData```, and ```difference```)
+2. **getDifference(data)**
+  - Get the difference between old value and current value
+  - @param  {object}        data object (see the constructor properties)
+  - @return {number/string} difference value or 'na' if there is no oldData
 
-3. ```calculatePriority(data)```
-* Calculate the priority of change
-* @param  {object} data object (see the constructor properties)
-* @return {number} new priority
+3. **getDisplayInfo(data)**
+  - Prepare strings required to show in the sentence
+  - @param  {object} data object (see the constructor properties)
+  - @return {object} information required to display in the sentence (default is ```title```, ```newData```, ```oldData```, and ```difference```)
 
-4. ```calculateLevel(data)```
-* Calculate the intesity of change
-* @param  {object} data object (see the constructor properties)
-* @return {number} intensity of the change (from -3 to 3)
+4. **calculatePriority(data)**
+  - Calculate the priority of change
+  - @param  {object} data object (see the constructor properties)
+  - @return {number} new priority
+
+5. **calculateLevel(data)**
+  - Calculate the intesity of change
+  - @param  {object} data object (see the constructor properties)
+  - @return {number} intensity of the change (from -3 to 3)
 
 #### Add dataType
 Data type can be added using addType() method
@@ -440,14 +445,14 @@ NL.addSentence: (title, func = {})
 
 ##### Functions available for overriding
 
-1. ```getSimpleSentenceList(data, simpleSentencese)```
-* Get a valid list of sentences for random selecting
-* @param  {object} data - data object
-* @param  {array}  simpleSentences - sentences from all types
-* @return {array}  array of valid sentences
+1. **getSimpleSentenceList(data, simpleSentencese)**
+  - Get a valid list of sentences for random selecting
+  - @param  {object} data - data object
+  - @param  {array}  simpleSentences - sentences from all types
+  - @return {array}  array of valid sentences
 
-2. ```getCompoundSentenceList(data, compoundSentences)```
-* Get a valid list of compound sentences
-* @param  {object} data - data object
-* @param  {array}  compoundSentences - sentences from all types
-* @return {array}  array of valid sentences
+2. **getCompoundSentenceList(data, compoundSentences)**
+  - Get a valid list of compound sentences
+  - @param  {object} data - data object
+  - @param  {array}  compoundSentences - sentences from all types
+  - @return {array}  array of valid sentences
