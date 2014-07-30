@@ -381,23 +381,23 @@ NL = new NaturalLanguage(data)
 ```
 data: array of objects, each contains the following properties, * is required
 ```
-"title": null # (*) String: Title/name of the data
-"oldData": null # Integer(default) or String: previous data to compare with current one
-"newData": null # (*) Integer(default) or String: current data
-"dataType": "default" # String: Type of data that can add more using addType() method
+"title": null             # (*) String: Title/name of the data
+"newData": null           # (*) Integer(default) or String: current data
+"oldData": null           # Integer(default) or String: previous data to compare with current one
+"dataType": "default"     # String: Type of data that can add more using addType() method
 "sentenceType": "default" # String: Type of sentence that can add more using addSentence() method
-"alwaysShow": false # Boolean: Always show this piece of data
-"options": { # Object: Set the value of priority and level
+"alwaysShow": false       # Boolean: Always show this piece of data
+"options": {              # Object: Set the value of priority and level
     "priority": {
-       "init": 1, # Integer: Initial priority
+       "init": 1,            # Integer: Initial priority
        "negativeFactor": 20, # Number: Rate of negative difference
        "positiveFactor": 100 # Number: Rate of positive difference
     },
     "level": {
-       "threshold": 0.09, # Number: The data is considered changed if the absolute difference is more than the threshold
-       "sensitiveness": 1 # Number: The data is in a difference level if newData is more different than the sensitiveness value
+       "threshold": 0.09,    # Number: The data is considered changed if the absolute difference is more than the threshold
+       "sensitiveness": 1    # Number: The data is in a difference level if newData is more different than the sensitiveness value
     }
-"precision": 0 # Integer: The desired decimal length, use for display only
+"precision": 0            # Integer: The desired decimal length, use for display only
 ```
 
 #### Add dataType
