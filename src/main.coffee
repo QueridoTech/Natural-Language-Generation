@@ -16,8 +16,8 @@ class NaturalLanguage
   ###
   global    = null
   _         = require 'underscore'
-  config    = require './resources/config.json'
-  sentences = require './resources/sentences.json'
+  config    = require './../resources/config.json'
+  sentences = require './../resources/sentences.json'
 
   constructor: (data) ->
     @data           = data

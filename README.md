@@ -1,7 +1,9 @@
 Natural-Language-Generation
 ===========================
-- Run ```coffee app.coffee```
-- For Jitta, run ```coffee jitta_example.coffee```
+#### Install
+```
+npm install nlg
+```
 
 Sample output:
 --------------
@@ -16,7 +18,10 @@ The price has decreased from 53% to 62.62% below jitta line. Jitta score is stil
 
 Usage:
 ------
-
+#### Import package
+```
+{NaturalLanguage} = require "nlg"
+```
 #### Basic integer
 ```
 NL = new NaturalLanguage [{

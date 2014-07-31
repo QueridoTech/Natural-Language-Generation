@@ -1,4 +1,4 @@
-{NaturalLanguage} = require "./main"
+{NaturalLanguage} = require "./src/main"
 input = require './resources/input2.json'
 NL = new NaturalLanguage input.data
 

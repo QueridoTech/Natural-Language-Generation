@@ -1,15 +1,21 @@
 {
-  "name": "Natural_Language_Generation",
-  "version": "0.0.0",
+  "name": "nlg",
+  "version": "0.1.1",
   "description": "",
-  "main": "app.js",
+  "main": "lib/main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/withlovee/Natural-Language-Generation"
+  },
+  "author": "Vee <happierv@gmail.com>",
   "license": "BSD-2-Clause",
   "dependencies": {
-    "underscore": "~1.6.0",
+    "underscore": "~1.6.0"
+  },
+  "devDependencies": {
     "coffee-script": "~1.7.1"
   }
 }
