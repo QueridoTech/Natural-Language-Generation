@@ -9,12 +9,15 @@ NL = new NaturalLanguage [{
 
 # Basic integer
 assert.equal(NL.generate(), "Growth opportunity is 60.")
+# console.log(NL.generate(), "Growth opportunity is 60.")
 
 # Basic integer with no random
 assert.equal(NL.generate(-1, false), "Growth opportunity is 60.")
+# console.log(NL.generate(-1, false), "Growth opportunity is 60.")
 
 # Basic integer with 0 data
 assert.equal(NL.generate(0, false), "")
+# console.log(NL.generate(0, false), "")
 
 NL = new NaturalLanguage [{
   "title": "Growth Opportunity",
@@ -23,6 +26,7 @@ NL = new NaturalLanguage [{
 }]
 # Integer with oldData to compare with
 assert.equal(NL.generate(-1, false), "Growth opportunity has significantly decreased by 30 to 60.")
+# console.log(NL.generate(-1, false), "Growth opportunity has significantly decreased by 30 to 60.")
 
 NL = new NaturalLanguage [{
   "title": "Growth Opportunity",
@@ -42,6 +46,7 @@ NL = new NaturalLanguage [{
 }]
 # Integer with custom options
 assert.equal(NL.generate(-1, false), "Growth opportunity has slightly dropped to 60.")
+# console.log(NL.generate(-1, false), "Growth opportunity has slightly dropped to 60.")
 
 NL = new NaturalLanguage [{
   "title": "Operating Margin",
@@ -49,6 +54,7 @@ NL = new NaturalLanguage [{
 }]
 # Basic string
 assert.equal(NL.generate(-1, false), "Operating margin is declined.")
+# console.log(NL.generate(-1, false), "Operating margin is declined.")
 
 NL = new NaturalLanguage [{
   "title": "Operating Margin",
@@ -57,6 +63,7 @@ NL = new NaturalLanguage [{
 }]
 # String with oldData to compare with
 assert.equal(NL.generate(-1, false), "Operating margin is declined.")
+# console.log(NL.generate(-1, false), "Operating margin is declined.")
 
 NL = new NaturalLanguage [{
   "title": "Share Repurchase",
@@ -118,6 +125,7 @@ signType = {
 NL.addType "sign", signType
 # String with custom functions
 assert.equal(NL.generate(-1, false), "Share repurchase is every year.")
+# console.log(NL.generate(-1, false), "Share repurchase is every year.")
 
 NL2 = new NaturalLanguage [{
   "title": "Share Repurchase",
@@ -130,6 +138,5 @@ NL2.addType "sign", signType
 # console.log NaturalLanguage.sentences
 # console.log NL2.generate(-1, false)
 assert.equal(NL2.generate(-1, false), "Share repurchase has raised from - to every year.")
-
-
+# console.log(NL2.generate(-1, false), "Share repurchase has raised from - to every year.")
 # assert.equal(NL.generate(-1, false), "Growth opportunity has extremely dropped to 60.")
