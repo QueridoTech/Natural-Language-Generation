@@ -41,8 +41,7 @@ NL = new NaturalLanguage [{
   }
 }]
 # Integer with custom options
-# assert.equal NL.generate(-1, false), "Growth opportunity has slightly dropped to 60."
-NL.generate(-1, false)
+assert.equal NL.generate(-1, false), "Growth opportunity has slightly dropped to 60."
 
 NL = new NaturalLanguage [{
   "title": "Operating Margin",
