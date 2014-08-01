@@ -181,14 +181,14 @@ NL.addType "sign", { .. Same as "sign" type above .. }
 NL.addSentence "repurchase", {
   simpleSentences: {
     "+2": {
-        "+2": [
-            "there is still {title} {newData}"
-        ]
+      "+2": [
+        "there is still {title} {newData}"
+      ]
     },
     "0": {
-        "+2": [
-            "there is {title} {newData}"
-        ]
+      "+2": [
+        "there is {title} {newData}"
+      ]
     }
   }
   getSimpleSentenceList: (data, simpleSentences) ->
@@ -310,7 +310,7 @@ console.log NL.generate()
 # Output: Growth opportunity has significantly decreased by 30 to 60 and financial strength looks good at 100. There is still share repurchase every year.
 ```
 
-#### Show only two pieces of data
+#### Show only N pieces of data
 ```
 NL = new NaturalLanguage [
   {

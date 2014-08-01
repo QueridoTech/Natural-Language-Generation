@@ -105,12 +105,23 @@ class NaturalLanguage
   setAttrs = (data) ->
     _.each data, (item, i) ->
       if item.options isnt undefined
-        item.options = _.extend(config.default, item.options)
+        # item.options = _.extend _.clone(config.default), item.options
+        item.options = _.defaults(item.options, config.default);
       else
-        item.options = config.default
+        item.options = {
+          "priority": {
+            "init": 1,
+            "negativeFactor": 20,
+            "positiveFactor": 100
+          },
+          "level": {
+            "threshold": 0.09,
+            "sensitiveness": 1
+          }
+        }
       item.dataType     = "default" unless item.dataType
-      # Custom for more attributes
 
+      # Custom for more attributes
       if global.dataConfig[item.dataType] and global.dataConfig[item.dataType].setAttrs
         item = global.dataConfig[item.dataType].setAttrs item
 
@@ -194,12 +205,7 @@ class NaturalLanguage
   calculatePriority = (data) ->
     # Override
     if global.dataConfig[data.dataType] and global.dataConfig[data.dataType].calculatePriority
-
-      unless typeof data.priority is "undefined"
-        data.options.priority.init = data.priority
-
-      return global.dataConfig[data.dataType]
-            .calculatePriority data.difference, data.options.priority
+      return global.dataConfig[data.dataType].calculatePriority data
 
     # Default
     priorityConfig = data.options.priority
@@ -477,10 +483,17 @@ class NaturalLanguage
     data = setAttrs @data
     data = selectData data, nData
     result = buildSentences data
-
+    # return data
     # for i of data
     #   console.log data[i].title, ": ", data[i].priority
     return result.join " "
+
+  debug: (nData = -1, random = true) ->
+    @random = random
+    return setAttrs @data
+    data = setAttrs @data
+    data = selectData data, nData
+    result = buildSentences data
 
 # signType = {
 #   words: {
@@ -545,3 +558,15 @@ class NaturalLanguage
 # NL.addType "sign", signType
 # # String with custom functions + oldData
 # console.log NL.generate(-1, false)
+
+  # adef = {
+  #   'key1': 'value1',
+  #   'key2': 'value2'
+  # }
+  # aover ={
+  #   'key1': 'value1override',
+  #   'key3': 'value3'
+  # }
+  # console.log _.extend(adef, aover)
+  # console.log adef
+  # console.log aover

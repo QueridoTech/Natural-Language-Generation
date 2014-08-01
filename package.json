@@ -17,5 +17,8 @@
   },
   "devDependencies": {
     "coffee-script": "~1.7.1"
+  },
+  "scripts": {
+    "test": "coffee test/test-main.coffee"
   }
 }

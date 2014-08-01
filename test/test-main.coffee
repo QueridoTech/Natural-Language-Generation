@@ -8,13 +8,13 @@ NL = new NaturalLanguage [{
 }]
 
 # Basic integer
-assert.equal(NL.generate(), "Growth opportunity is 60.")
+assert.equal NL.generate(), "Growth opportunity is 60."
 
 # Basic integer with no random
-assert.equal(NL.generate(-1, false), "Growth opportunity is 60.")
+assert.equal NL.generate(-1, false), "Growth opportunity is 60."
 
 # Basic integer with 0 data
-assert.equal(NL.generate(0, false), "")
+assert.equal NL.generate(0, false), ""
 
 NL = new NaturalLanguage [{
   "title": "Growth Opportunity",
@@ -22,7 +22,7 @@ NL = new NaturalLanguage [{
   "oldData": 90
 }]
 # Integer with oldData to compare with
-assert.equal(NL.generate(-1, false), "Growth opportunity has significantly decreased by 30 to 60.")
+assert.equal NL.generate(-1, false), "Growth opportunity has significantly decreased by 30 to 60."
 
 NL = new NaturalLanguage [{
   "title": "Growth Opportunity",
@@ -41,14 +41,15 @@ NL = new NaturalLanguage [{
   }
 }]
 # Integer with custom options
-assert.equal(NL.generate(-1, false), "Growth opportunity has slightly dropped to 60.")
+# assert.equal NL.generate(-1, false), "Growth opportunity has slightly dropped to 60."
+NL.generate(-1, false)
 
 NL = new NaturalLanguage [{
   "title": "Operating Margin",
   "newData": "Declined"
 }]
 # Basic string
-assert.equal(NL.generate(-1, false), "Operating margin is declined.")
+assert.equal NL.generate(-1, false), "Operating margin is declined."
 
 NL = new NaturalLanguage [{
   "title": "Operating Margin",
@@ -56,7 +57,7 @@ NL = new NaturalLanguage [{
   "newData": "Declined"
 }]
 # String with oldData to compare with
-assert.equal(NL.generate(-1, false), "Operating margin is declined.")
+assert.equal NL.generate(-1, false), "Operating margin is declined."
 
 NL = new NaturalLanguage [{
   "title": "Share Repurchase",
@@ -117,19 +118,151 @@ signType = {
 }
 NL.addType "sign", signType
 # String with custom functions
-assert.equal(NL.generate(-1, false), "Share repurchase is every year.")
+assert.equal NL.generate(-1, false), "Share repurchase is every year."
 
-NL2 = new NaturalLanguage [{
+NL = new NaturalLanguage [{
   "title": "Share Repurchase",
-  "oldData": "-sss",
+  "oldData": "-",
   "newData": "Every year",
   "dataType": "sign"
 }]
-NL2.addType "sign", signType
+NL.addType "sign", signType
 # String with custom functions + oldData
-# console.log NaturalLanguage.sentences
-# console.log NL2.generate(-1, false)
-assert.equal(NL2.generate(-1, false), "Share repurchase has raised from - to every year.")
+assert.equal NL.generate(-1, false), "Share repurchase has raised from - to every year."
 
+NL = new NaturalLanguage [{
+  "title": "Share Repurchase",
+  "newData": "Every year",
+  "dataType": "sign",
+  "sentenceType": "repurchase"
+}]
+repurchaseSentence = {
+  simpleSentences: {
+    "+2": {
+      "+2": [
+        "there is still {title} {newData}"
+      ]
+    },
+    "0": {
+      "+2": [
+        "there is {title} {newData}"
+      ]
+    }
+  }
+  getSimpleSentenceList: (data, simpleSentences) ->
+    oldScore = if typeof data.oldScore == "undefined" then 0 else data.oldScore
+    @simpleSentences[oldScore][data.newScore]
+}
+NL.addType "sign", signType
+NL.addSentence "repurchase", repurchaseSentence
+# Use custom functions and custom sentences
+assert.equal NL.generate(-1, false), "There is share repurchase every year."
 
-# assert.equal(NL.generate(-1, false), "Growth opportunity has extremely dropped to 60.")
+NL = new NaturalLanguage [{
+  "title": "Share Repurchase",
+  "oldData": "Every year",
+  "newData": "Every year",
+  "dataType": "sign",
+  "sentenceType": "repurchase"
+}]
+NL.addType "sign", signType
+NL.addSentence "repurchase", repurchaseSentence
+# Custom functions + sentences + oldData
+assert.equal NL.generate(-1, false), "There is still share repurchase every year."
+
+NL = new NaturalLanguage [
+  {
+    "title": "Share Repurchase",
+    "oldData": "Every year",
+    "newData": "Every year",
+    "dataType": "sign",
+    "sentenceType": "repurchase"
+  },
+  {
+    "title": "Growth Opportunity",
+    "newData": 60,
+    "oldData": 90
+  }
+]
+NL.addType "sign", signType
+NL.addSentence "repurchase", repurchaseSentence
+# Multiple sentences
+assert.equal NL.generate(-1, false), "Growth opportunity has significantly decreased by 30 to 60 and there is still share repurchase every year."
+
+NL = new NaturalLanguage [
+  {
+    "title": "Share Repurchase",
+    "oldData": "Every year",
+    "newData": "Every year",
+    "dataType": "sign",
+    "sentenceType": "repurchase",
+    "contentGroup": "sign"
+  },
+  {
+    "title": "Growth Opportunity",
+    "newData": 60,
+    "oldData": 90,
+    "contentGroup": "factor"
+  }
+]
+NL.addType "sign", signType
+NL.addSentence "repurchase", repurchaseSentence
+# Separate data into groups
+assert.equal NL.generate(-1, false), "Growth opportunity has significantly decreased by 30 to 60. There is still share repurchase every year."
+
+NL = new NaturalLanguage [
+  {
+    "title": "Share Repurchase",
+    "oldData": "Every year",
+    "newData": "Every year",
+    "dataType": "sign",
+    "sentenceType": "repurchase",
+    "contentGroup": "sign"
+  },
+  {
+    "title": "Growth Opportunity",
+    "newData": 60,
+    "oldData": 90,
+    "contentGroup": "factor"
+  },
+  {
+    "title": "Financial Strength",
+    "oldData": 100,
+    "newData": 100,
+    "contentGroup": "factor"
+  }
+]
+NL.addType "sign", signType
+NL.addSentence "repurchase", repurchaseSentence
+# Extra example
+assert.equal NL.generate(-1, false), "Growth opportunity has significantly decreased by 30 to 60 and financial strength is still good at 100. There is still share repurchase every year."
+# Show only two pieces of data
+assert.equal NL.generate(2, false), "Growth opportunity has significantly decreased by 30 to 60. There is still share repurchase every year."
+
+NL = new NaturalLanguage [
+  {
+    "title": "Share Repurchase",
+    "oldData": "Every year",
+    "newData": "Every year",
+    "dataType": "sign",
+    "sentenceType": "repurchase",
+    "contentGroup": "sign"
+  },
+  {
+    "title": "Growth Opportunity",
+    "newData": 60,
+    "oldData": 90,
+    "contentGroup": "factor"
+  },
+  {
+    "title": "Financial Strength",
+    "oldData": 100,
+    "newData": 100,
+    "contentGroup": "factor",
+    "alwaysShow": true # Force this data to display
+  }
+]
+NL.addType "sign", signType
+NL.addSentence "repurchase", repurchaseSentence
+# Always show this data no matter what
+assert.equal NL.generate(2, false), "Growth opportunity has significantly decreased by 30 to 60 and financial strength is still good at 100."
