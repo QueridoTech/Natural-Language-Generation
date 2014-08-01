@@ -15,14 +15,15 @@ class NaturalLanguage
    * ------------------------------------------------------------
   ###
   global    = null
-  _         = require 'underscore'
-  config    = require './../resources/config.json'
-  sentences = require './../resources/sentences.json'
+  _         = require "underscore"
+  config    = require "./../resources/config.json"
+  sentences = require "./../resources/sentences.json"
 
   constructor: (data) ->
     @data           = data
     @dataConfig     = {}
     @sentenceConfig = {}
+    @random         = true
     global          = @
 
   ###*
@@ -55,7 +56,10 @@ class NaturalLanguage
   ###
 
   replaceStr = (patterns, data) ->
-    pattern = _.sample patterns
+    if global.random
+      pattern = _.sample patterns
+    else
+      pattern = patterns[0]
     _.each data, (item, key) ->
       pattern = pattern.replace "{#{key}}", item
     pattern
@@ -72,7 +76,10 @@ class NaturalLanguage
   ###
 
   replaceCombinedStr = (patterns, data) ->
-    pattern = _.sample patterns
+    if global.random
+      pattern = _.sample patterns
+    else
+      pattern = patterns[0]
     _.each data, (items, i) ->
       _.each items, (item, key) ->
         pattern = pattern.replace "{#{key}.#{i}}", items[key]
@@ -101,17 +108,17 @@ class NaturalLanguage
         item.options = _.extend(config.default, item.options)
       else
         item.options = config.default
-      item.dataType     = 'default' unless item.dataType
+      item.dataType     = "default" unless item.dataType
       # Custom for more attributes
 
       if global.dataConfig[item.dataType] and global.dataConfig[item.dataType].setAttrs
         item = global.dataConfig[item.dataType].setAttrs item
 
       # Default attributes
-      item.alwaysShow   = false if typeof item.alwaysShow is 'undefined'
-      item.contentGroup = 'default' unless item.contentGroup
-      item.sentenceType = 'default' unless item.sentenceType
-      item.precision    = 0 unless item.precision != 'undefined'
+      item.alwaysShow   = false if typeof item.alwaysShow is "undefined"
+      item.contentGroup = "default" unless item.contentGroup
+      item.sentenceType = "default" unless item.sentenceType
+      item.precision    = 0 unless item.precision != "undefined"
       item.difference   = getDifference item
       item.displayInfo  = getDisplayInfo item
       item.priority     = calculatePriority item
@@ -136,10 +143,10 @@ class NaturalLanguage
       return global.dataConfig[data.dataType].getDifference data
 
     # Default
-    if typeof data.oldData isnt 'undefined' and typeof data.oldData == 'number'
+    if typeof data.oldData isnt "undefined" and typeof data.oldData == "number"
       data.newData - data.oldData
     else 
-      'na'
+      "na"
 
 
   ###*
@@ -160,14 +167,14 @@ class NaturalLanguage
     result = {}
     result.title = data.title.toLowerCase()
     
-    if typeof data.oldData isnt 'undefined'
-      if typeof data.oldData == 'number'
+    if typeof data.oldData isnt "undefined"
+      if typeof data.oldData == "number"
         result.oldData    = data.oldData.toFixed data.precision
       else
         result.oldData = data.oldData.toLowerCase()
-      if typeof data.difference == 'number'
+      if typeof data.difference == "number"
         result.difference = Math.abs(data.difference).toFixed data.precision
-    if typeof data.newData == 'number'
+    if typeof data.newData == "number"
       result.newData = data.newData.toFixed(data.precision)
     else
       result.newData = data.newData.toLowerCase()
@@ -188,7 +195,7 @@ class NaturalLanguage
     # Override
     if global.dataConfig[data.dataType] and global.dataConfig[data.dataType].calculatePriority
 
-      unless typeof data.priority is 'undefined'
+      unless typeof data.priority is "undefined"
         data.options.priority.init = data.priority
 
       return global.dataConfig[data.dataType]
@@ -197,7 +204,7 @@ class NaturalLanguage
     # Default
     priorityConfig = data.options.priority
 
-    if data.difference is 'na'
+    if data.difference is "na"
       return priorityConfig.init
     else if data.difference > 0
       newPriority = priorityConfig.init +
@@ -227,8 +234,8 @@ class NaturalLanguage
     # Default
     levelConfig = data.options.level
 
-    if data.difference is 'na'
-      level = 'na'
+    if data.difference is "na"
+      level = "na"
     else
       absoluteDifference = Math.abs data.difference
       if absoluteDifference < levelConfig.threshold
@@ -251,13 +258,13 @@ class NaturalLanguage
 
   calculateType = (level) ->
     if level > 0
-      'positive'
+      "positive"
     else if level < 0
-      'negative'
-    else if level is 'na'
-      'na'
+      "negative"
+    else if level is "na"
+      "na"
     else
-      'neutral'
+      "neutral"
 
 
   ###*
@@ -298,7 +305,7 @@ class NaturalLanguage
     data = _.filter data, (item) ->
       ! item.hidden
 
-    data = _.groupBy data, 'alwaysShow'
+    data = _.groupBy data, "alwaysShow"
     data.sortedData = []
     data.alwaysShow = []
 
@@ -330,21 +337,21 @@ class NaturalLanguage
                .getSimpleSentenceList data, simpleSentencese
 
     # Default
-    if typeof data.oldData is 'undefined' # No oldData
-      if typeof sentences.simpleSentences[data.sentenceType] isnt 'undefined' \
-        and typeof sentences.simpleSentences[data.sentenceType]['na'] isnt 'undefined'
-          sentences.simpleSentences[data.sentenceType]['na']
+    if typeof data.oldData is "undefined" # No oldData
+      if typeof sentences.simpleSentences[data.sentenceType] isnt "undefined" \
+        and typeof sentences.simpleSentences[data.sentenceType]["na"] isnt "undefined"
+          sentences.simpleSentences[data.sentenceType]["na"]
       else
-        sentences.simpleSentences['default']['na']
+        sentences.simpleSentences["default"]["na"]
     else
-      if typeof sentences.simpleSentences[data.sentenceType] isnt 'undefined' \
-        and typeof sentences.simpleSentences[data.sentenceType][data.levelType] isnt 'undefined'
-          if typeof sentences.simpleSentences[data.sentenceType][data.levelType][data.level.toString()] isnt 'undefined'
+      if typeof sentences.simpleSentences[data.sentenceType] isnt "undefined" \
+        and typeof sentences.simpleSentences[data.sentenceType][data.levelType] isnt "undefined"
+          if typeof sentences.simpleSentences[data.sentenceType][data.levelType][data.level.toString()] isnt "undefined"
             sentences.simpleSentences[ data.sentenceType ][ data.levelType ][ data.level.toString() ]
           else
             sentences.simpleSentences[ data.sentenceType ][ data.levelType ]
       else
-        sentences.simpleSentences['default'][ data.levelType ][ data.level.toString() ]
+        sentences.simpleSentences["default"][ data.levelType ][ data.level.toString() ]
 
 
   ###*
@@ -406,10 +413,10 @@ class NaturalLanguage
   ###
 
   buildCompoundSentence = (data) ->
-    types = _.pluck data, 'levelType'
-    type = types.join '_'
+    types = _.pluck data, "levelType"
+    type = types.join "_"
 
-    moreDisplayInfo = _.pluck addSimpleSentence(data), 'displayInfo'
+    moreDisplayInfo = _.pluck addSimpleSentence(data), "displayInfo"
     compoundSentences = getCompoundSentenceList data, sentences.compoundSentences
     selectedSentences = _.find compoundSentences, (group) ->
       _.contains(group.type, type);
@@ -428,7 +435,7 @@ class NaturalLanguage
 
   buildSentences = (data) ->
     result = []
-    data = _.groupBy data, 'contentGroup'
+    data = _.groupBy data, "contentGroup"
 
     # for group of data
     _.each data, (group) ->
@@ -465,10 +472,76 @@ class NaturalLanguage
    * @return {String/Number/Object/Function/Boolean} desc
    * @public
   ###
-  generate: (nData = -1) ->
+  generate: (nData = -1, random = true) ->
+    @random = random
     data = setAttrs @data
     data = selectData data, nData
     result = buildSentences data
+
     # for i of data
     #   console.log data[i].title, ": ", data[i].priority
-    return result.join ' '
+    return result.join " "
+
+# signType = {
+#   words: {
+#     "Debt Level": {
+#       "-": "0",
+#       "Low .*": "+1",
+#       "No .*": "+2",
+#       "High .* in the past 5 years": "-1",
+#       "High .*": "-2",
+#       "Very High .*": "-3"
+#     },
+#     "Share Repurchase": {
+#       "-": "0",
+#       "Every year": "+2"
+#     },
+#     "CapEx": {
+#       "-": "0",
+#       "Very Low": "+2",
+#       "Very High": "-2"
+#     }
+#   },
+#   setAttrs: (data) ->
+#     data.newScore = @getScore(data.title, data.newData)
+#     if(typeof data.oldData != "undefined")
+#       data.oldScore = @getScore(data.title, data.oldData)
+#     if(data.newScore == '0')
+#       data.hidden = true
+#     data
+
+#   getDisplayInfo: (data) ->
+#     precision = data.precision
+#     result = {}
+#     result.title = data.title.toLowerCase()
+#     result.title = "CapEx" if data.title == "CapEx"
+#     result.newData = data.newData.toLowerCase()
+#     if(typeof data.oldData != "undefined")
+#       result.oldData = data.oldData.toLowerCase()
+#     result
+
+#   getScore: (title, data) ->
+#     for item of @words[title]
+#       pattern = new RegExp(item, "g");
+#       if pattern.test(data)
+#         return @words[title][item]
+#     return null
+
+#   getDifference: (data) ->
+#     if(typeof data.oldData != "undefined")
+#       parseInt(data.newScore) - parseInt(data.oldScore)
+#     else
+#       "na"  
+# }
+# # String with custom functions
+
+
+# NL = new NaturalLanguage [{
+#   "title": "Share Repurchase",
+#   "oldData": "-",
+#   "newData": "Every year",
+#   "dataType": "sign"
+# }]
+# NL.addType "sign", signType
+# # String with custom functions + oldData
+# console.log NL.generate(-1, false)
