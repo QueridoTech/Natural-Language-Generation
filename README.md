@@ -19,11 +19,11 @@ The price has decreased from 53% to 62.62% below jitta line. Jitta score is stil
 Usage:
 ------
 #### Import package
-```
+```coffee
 {NaturalLanguage} = require "nlg"
 ```
 #### Basic integer
-```
+```coffee
 NL = new NaturalLanguage [{
   "title": "Growth Opportunity",
   "newData": 60
@@ -33,7 +33,7 @@ console.log NL.generate()
 ```
 
 #### Integer with oldData to compare with
-```
+```coffee
 NL = new NaturalLanguage [{
   "title": "Growth Opportunity",
   "newData": 60,
@@ -44,7 +44,7 @@ console.log NL.generate()
 ```
 
 #### Integer with custom options
-```
+```coffee
 NL = new NaturalLanguage [{
   "title": "Growth Opportunity",
   "newData": 60,
@@ -66,7 +66,7 @@ console.log NL.generate()
 ```
 
 #### Basic string
-```
+```coffee
 NL = new NaturalLanguage [{
   "title": "Operating Margin",
   "newData": "Declined"
@@ -76,7 +76,7 @@ console.log NL.generate()
 ```
 
 #### String with oldData to compare with
-```
+```coffee
 NL = new NaturalLanguage [{
   "title": "Operating Margin",
   "oldData": "-",
@@ -87,7 +87,7 @@ console.log NL.generate()
 ```
 
 #### String with custom functions
-```
+```coffee
 NL = new NaturalLanguage [{
       "title": "Share Repurchase",
       "newData": "Every year",
@@ -154,7 +154,7 @@ console.log NL.generate()
 ```
 
 #### String with custom functions + oldData
-```
+```coffee
 NL = new NaturalLanguage [{
   "title": "Share Repurchase",
   "oldData": "-",
@@ -170,7 +170,7 @@ console.log NL.generate()
 ```
 
 #### Use custom functions and custom sentences
-```
+```coffee
 NL = new NaturalLanguage [{
   "title": "Share Repurchase",
   "newData": "Every year",
@@ -204,7 +204,7 @@ console.log NL.generate()
 ```
 
 #### Custom functions + sentences + oldData
-```
+```coffee
 NL = new NaturalLanguage [{
   "title": "Share Repurchase",
   "oldData": "Every year",
@@ -223,7 +223,7 @@ console.log NL.generate()
 ```
 
 #### Multiple sentences
-```
+```coffee
 NL = new NaturalLanguage [
   {
     "title": "Share Repurchase",
@@ -249,7 +249,7 @@ console.log NL.generate()
 ```
 
 #### Separate data into groups
-```
+```coffee
 NL = new NaturalLanguage [
   {
     "title": "Share Repurchase",
@@ -277,7 +277,7 @@ console.log NL.generate()
 ```
 
 #### Extra example
-```
+```coffee
 NL = new NaturalLanguage [
   {
     "title": "Share Repurchase",
@@ -311,7 +311,7 @@ console.log NL.generate()
 ```
 
 #### Show only N pieces of data
-```
+```coffee
 NL = new NaturalLanguage [
   {
     "title": "Share Repurchase",
@@ -344,7 +344,7 @@ console.log NL.generate(2) # Put number of data to present
 # Output: Growth opportunity has extremely dropped to 60. There is still share repurchase every year.
 ```
 #### Always show this data no matter what
-```
+```coffee
 NL = new NaturalLanguage [
   {
     "title": "Share Repurchase",
@@ -381,11 +381,11 @@ console.log NL.generate(2) # Put number of data to present
 APIs:
 -----
 #### Constructor:
-```
+```coffee
 NL = new NaturalLanguage(data)
 ```
 data: array of objects, each contains the following properties, * is required
-```
+```coffee
 "title": null             # (*) String: Title/name of the data
 "newData": null           # (*) Integer(default) or String: current data
 "oldData": null           # Integer(default) or String: previous data to compare with current one
@@ -407,7 +407,7 @@ data: array of objects, each contains the following properties, * is required
 
 #### Add dataType
 Data type can be added using addType() method
-```
+```coffee
 NL.addType: (title, func = {})
 ```
 - **title**: name of the type
@@ -428,7 +428,7 @@ NL.addType: (title, func = {})
 3. **getDisplayInfo(data)**
   - Prepare strings required to show in the sentence
   - @param  {object} data object (see the constructor properties)
-  - @return {object} information required to display in the sentence (default is ```title```, ```newData```, ```oldData```, and ```difference```)
+  - @return {object} information required to display in the sentence (default is `title`, `newData`, `oldData`, and `difference`)
 
 4. **calculatePriority(data)**
   - Calculate the priority of change
@@ -442,7 +442,7 @@ NL.addType: (title, func = {})
 
 #### Add dataType
 Data type can be added using addType() method
-```
+```coffee
 NL.addSentence: (title, func = {})
 ```
 - **title**: name of the type
